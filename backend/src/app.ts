@@ -1,18 +1,12 @@
 import "dotenv/config.js"
 import express, { NextFunction , Request, Response} from "express";
-import NoteModel from "./models/note"
-
+import notesRoute from "./routes/notes"
 
 const app = express();
-app.get("/", async (req, res, next) => {
-    try {
-        const notes = await NoteModel.find().exec()
-        res.status(200).json(notes)
-    } catch (error) {
-        next(error);
-    }
 
-})
+app.use(express.json())
+
+app.use("/api/notes", notesRoute)
 
 app.use((req, res, next) => {
     next(Error("Endpoint not found"))
